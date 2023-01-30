@@ -1,7 +1,15 @@
 import React from "react";
 
 const intitialState = {
-  dataName: "",
+  data: {
+    avgTotalVolume: null,
+    companyName: "",
+    symbol: "",
+    week52High: null,
+    week52Low: null,
+    change: null,
+    close: null,
+  },
   loading: false,
   error: "",
 };
@@ -12,9 +20,9 @@ const dataObjReducer = (state: any, action: any) => {
     case "FETCH_START":
       return { ...state, loading: true };
     case "FETCH_SUCCESS":
-      return { dataName: payload, loading: false };
+      return { ...state, data: payload, loading: false };
     case "FETCH_ERROR":
-      return { ...state, error: payload };
+      return { ...state, error: payload, loading: false };
     default:
       return state;
   }
@@ -36,7 +44,15 @@ export const Post = () => {
       .then((data) => {
         dispatch({
           type: "FETCH_SUCCESS",
-          payload: data.companyName,
+          payload: {
+            avgTotalVolume: data.avgTotalVolume,
+            companyName: data.companyName,
+            symbol: data.symbol,
+            week52High: data.week52High,
+            week52Low: data.week52Low,
+            change: data.change,
+            close: data.close,
+          },
         });
       })
       .catch((error) => {
@@ -49,8 +65,10 @@ export const Post = () => {
       <button onClick={handleFetch}>
         {data.loading ? "Wait..." : "Fetch the data"}
       </button>
-      {data.dataName && !data.error ? (
-        <p>{JSON.stringify(data.dataName)}</p>
+      {JSON.stringify(data) !== JSON.stringify(intitialState) &&
+      !data.loading &&
+      !data.error ? (
+        <p>{JSON.stringify(data)}</p>
       ) : (
         <p>{data.error && data.error}</p>
       )}
