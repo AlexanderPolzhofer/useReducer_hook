@@ -2,8 +2,7 @@ import { Post } from "./components/Post/Post";
 import "./App.css";
 
 const App: React.FC = () => {
-  return <Post />
-
+  return <Post />;
 };
 
 export default App;

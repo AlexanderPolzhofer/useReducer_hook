@@ -1,32 +1,6 @@
 import React from "react";
-
-const intitialState = {
-  data: {
-    avgTotalVolume: null,
-    companyName: "",
-    symbol: "",
-    week52High: null,
-    week52Low: null,
-    change: null,
-    close: null,
-  },
-  loading: false,
-  error: "",
-};
-
-const dataObjReducer = (state: any, action: any) => {
-  const { type, payload } = action;
-  switch (type) {
-    case "FETCH_START":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return { ...state, data: payload, loading: false };
-    case "FETCH_ERROR":
-      return { ...state, error: payload, loading: false };
-    default:
-      return state;
-  }
-};
+import { intitialState, dataObjReducer } from "../../store/reducer";
+import { Card } from "../Card/Card";
 
 export const Post = () => {
   const [data, dispatch] = React.useReducer(dataObjReducer, intitialState);
@@ -68,7 +42,7 @@ export const Post = () => {
       {JSON.stringify(data) !== JSON.stringify(intitialState) &&
       !data.loading &&
       !data.error ? (
-        <p>{JSON.stringify(data)}</p>
+        <Card data={data} />
       ) : (
         <p>{data.error && data.error}</p>
       )}
